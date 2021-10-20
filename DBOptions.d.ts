@@ -1,37 +1,25 @@
+import {DatabaseTypes} from "orbit-db";
 
-interface ICreateOptions {
-    /**
-     * The directory where data will be stored (Default: uses directory option passed to OrbitDB constructor or ./orbitdb if none was provided).
-     */
-    directory?: string;
-    
-    accessController?: { 
-        /**
-         * An array of hex encoded public keys which are used to set write access to the database.
-         * ["*"] can be passed in to give write access to everyone.
-         * See the GETTING STARTED guide for more info.
-         * (Default: uses the OrbitDB instance key orbitdb.key, which would give write access only to yourself)
-         */
-        write?: string[]
-        
-        /**
-         * Name of custom AccessController
-         */
-        type?: string 
-    };
-    
+export interface ICreateOptions extends IOpenOptions0 {
     /**
      * Overwrite an existing database (Default: false)
      */
     overwrite?: boolean;
-
-    /**
-     * Replicate the database with peers, requires IPFS PubSub. (Default: true)
-     */
-    replicate?: boolean;
 }
 
-interface IOpenOptions {
+interface IOpenOptions0 {
+    /**will override accessController*/
+    accessControllerAddress?: string;
+    accessController?: {
+        /**
+         * Name of custom AccessController
+         * @default ipfs
+         */
+        type?: string
+
+        [key: string]: any
+    };
+
     /**
      * f set to true, will throw an error if the database can't be found locally. (Default: false)
      */
@@ -43,11 +31,6 @@ interface IOpenOptions {
     directory?: string;
 
     /**
-     * Whether or not to create the database if a valid OrbitDB address is not provided. (Default: false, only if using the OrbitDB#open method, otherwise this is true by default)
-     */
-    create?: boolean;
-
-    /**
      * A supported database type (i.e. eventlog or an added custom type).
      * Required if create is set to true.
      * Otherwise it's used to validate the manifest.
@@ -56,21 +39,18 @@ interface IOpenOptions {
     type?: TStoreType;
 
     /**
-     * Overwrite an existing database (Default: false)
-     */
-    overwrite?: boolean;
-
-    /**
      * Replicate the database with peers, requires IPFS PubSub. (Default: true)
      */
     replicate?: boolean;
 }
 
-interface IStoreOptions extends ICreateOptions, IOpenOptions {
-    Index?: any
+export type IOpenOptions = ({ create: true, type: TStoreType } & ICreateOptions) | IOpenOptions0
+
+export interface IStoreOptions extends ICreateOptions, IOpenOptions {
+    Index?: any;
 }
 
 // c.f. https://github.com/orbitdb/orbit-db/blob/master/API.md#orbitdbdatabasetypes
-type TStoreType = 'counter' | 'eventlog' | 'feed' | 'docstore' | 'keyvalue' | string;
+export type TStoreType = keyof DatabaseTypes;
 
 //export {ICreateOptions, IOpenOptions, IStoreOptions};

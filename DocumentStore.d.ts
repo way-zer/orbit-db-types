@@ -1,14 +1,14 @@
 declare module "orbit-db-docstore" {
     import Store from "orbit-db-store";
 
-    export default class DocumentStore<T> extends Store {
+    export default class DocumentStore<T extends { _id: string }> extends Store {
+        get(key: string, caseSensitive = false): T
+        query(filter: (doc: T) => boolean, options?: { fullOp: boolean }): T[]
 
-        put(doc: T): Promise<string>;
-        get(key: any): T[];
-
-        query(mapper: (doc: T) => void): T[]
+        batchPut(docs: T[]): Promise<void>
+        put(doc: T): Promise<string>
+        putAll(doc: T | T[]): Promise<string>
 
         del(key: any): Promise<string>;
-
     }
 }
