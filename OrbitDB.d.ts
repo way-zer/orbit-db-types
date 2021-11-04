@@ -24,7 +24,7 @@ declare module "orbit-db" {
         keyvalue: KeyValueStore
     }
 
-    class OrbitDBAddress {
+    export class OrbitDBAddress {
         constructor(public root: string, public path: string)
         toString(): string
         static isValid(address): boolean
@@ -32,7 +32,7 @@ declare module "orbit-db" {
         static join(...paths): string
     }
 
-    class OrbitDB {
+    export class OrbitDB {
         identity: Identity;
         id: string;
         directory: string;
