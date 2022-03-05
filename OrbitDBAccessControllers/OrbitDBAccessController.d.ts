@@ -1,16 +1,26 @@
 
 declare module "orbit-db-access-controllers/src/orbitdb-access-controller" {
-    import AccessController from "orbit-db-access-controllers/src/access-controller-interface"
-    import OrbitDB from "orbit-db"
+    import AccessController from "orbit-db-access-controllers/src/access-controller-interface";
+    import OrbitDB from "orbit-db";
+
+    interface OrbitDBAccessControllerOption {
+        admin?: string[];
+    }
+
+    interface OrbitDBAccessControllerCreateOption extends OrbitDBAccessControllerOption {
+        address?: string;
+        name?: string;
+        write?: string[];
+    }
 
     export default class OrbitDBAccessController extends AccessController {
-        constructor (orbitdb: OrbitDB, options: any)
+        constructor(orbitdb: OrbitDB, options: OrbitDBAccessControllerOption)
 
         // Returns the type of the access controller
-        static get type (): string
+        static get type(): string
 
         // Returns the address of the OrbitDB used as the AC
-        get address (): string
+        get address(): string
 
         // Return true if entry is allowed to be added to the database
         canAppend (entry: LogEntry<any>, identityProvider: any): Promise<boolean>
@@ -32,7 +42,7 @@ declare module "orbit-db-access-controllers/src/orbitdb-access-controller" {
         _onUpdate (): void
 
         /* Factory */
-        static create (orbitdb: OrbitDB, options: any): Promise<OrbitDBAccessController>
+        static create(orbitdb: OrbitDB, options: OrbitDBAccessControllerCreateOption): Promise<OrbitDBAccessController>
     }
 
 }
