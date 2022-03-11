@@ -4,6 +4,7 @@ declare module "orbit-db-identity-provider" {
     import Identity, {IdentityAsJson} from "orbit-db-identity-provider/src/identity";
     import Store from "orbit-db-store";
     import {Keystore} from "orbit-db-keystore";
+    import LRU from "lru";
 
     export type IdentityProviderType = "orbitdb" | "ethereum" | string;
 

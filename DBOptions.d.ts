@@ -46,6 +46,7 @@ interface IOpenOptions0 {
 
 export type IOpenOptions = ({ create: true, type: TStoreType } & ICreateOptions) | IOpenOptions0
 
+// @ts-ignore
 export interface IStoreOptions extends ICreateOptions, IOpenOptions {
     Index?: any;
 }
